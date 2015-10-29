@@ -50,11 +50,11 @@ pub struct Window {
 }
 
 impl Window {
-    fn printw(&self, s: &str) {
+    pub fn printw(&self, s: &str) {
         let c_string: CString = CString::new(s).unwrap();
         unsafe { wprintw(self, c_string.as_ptr()); }
     }
-    fn getch(&self) {
+    pub fn getch(&self) {
         unsafe { wgetch(self); }
     }
 }
