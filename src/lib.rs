@@ -5,7 +5,7 @@ use std::mem;
 
 #[repr(C)]
 #[derive(Clone)]
-struct Window {
+pub struct Window {
     _cury: c_short,
     _curx: c_short,
     _maxy: c_short,
@@ -56,12 +56,12 @@ impl Window {
     }
 }
 
-fn initialize_screen() -> Window {
+pub fn initialize_screen() -> Window {
     let result: &Window = unsafe { initscr() };
     result.clone()
 }
 
-fn end_window() {
+pub fn end_window() {
     unsafe { endwin(); }
 }
 
