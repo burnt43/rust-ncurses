@@ -54,6 +54,9 @@ impl Window {
         let c_string: CString = CString::new(s).unwrap();
         unsafe { wprintw(self, c_string.as_ptr()); }
     }
+    fn getch(&self) {
+        unsafe { wgetch(self); }
+    }
 }
 
 pub fn initialize_screen() -> Window {
@@ -87,4 +90,5 @@ extern {
     fn initscr() -> &Window;
     fn endwin()  -> c_int;
     fn wprintw(window: &Window, s: *const c_char) -> c_int;
+    fn wgetch(window: &Window) -> c_int;
 }
