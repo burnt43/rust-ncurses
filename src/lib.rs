@@ -75,11 +75,14 @@ pub fn end_window() {
 fn window_from_initscr_matches_my_machine() {
     let window: Window         = initialize_screen();
     let message_to_print: &str = "Hello";
-    //window.printw(message_to_print);
-    window.getch();
+    window.printw(message_to_print);
+    //window.getch();
     end_window();
 
     assert_eq!( mem::size_of::<Window>(), 96 );
+    assert_eq!( (&window as *const Window) as usize,     (&(window._cury) as *const c_short) as usize );
+    assert_eq!( (&window as *const Window) as usize + 2, (&(window._curx) as *const c_short) as usize );
+
     assert_eq!( window._cury, 0 );
     assert_eq!( window._curx, message_to_print.len() as i16 );
     assert!( window._maxy > 0 );
