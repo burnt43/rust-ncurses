@@ -53,25 +53,25 @@ struct NCursesWindow {
 }
 
 pub struct Window {
-    ncurses_window: *const NCursesWindow,
+    p_window: *const NCursesWindow,
 }
 
 impl Window {
     pub fn printw(&self, s: &str) {
         let c_string: CString = CString::new(s).unwrap();
-        unsafe { wprintw(self.ncurses_window, c_string.as_ptr()); }
+        unsafe { wprintw(self.p_window, c_string.as_ptr()); }
     }
     pub fn getch(&self) {
-        unsafe { wgetch(self.ncurses_window); }
+        unsafe { wgetch(self.p_window); }
     }
     pub fn refresh(&self) {
-        unsafe { wrefresh(self.ncurses_window); }
+        unsafe { wrefresh(self.p_window); }
     }
 }
 
 pub fn initialize_screen() -> Window {
-    let p_ncurses_window: *const NCursesWindow = unsafe { initscr() };
-    Window { ncurses_window: p_ncurses_window }
+    let p_p_window: *const NCursesWindow = unsafe { initscr() };
+    Window { p_window: p_p_window }
 }
 
 pub fn end_window() {
@@ -79,18 +79,14 @@ pub fn end_window() {
 }
 
 #[test]
-fn window_from_initscr_matches_my_machine() {
-    let window: Window         = initialize_screen();
-    let message_to_print: &str = "Hello";
-    window.printw(message_to_print);
-    window.refresh();
-    window.getch();
+fn memory_layout_of_ncurses_window_is_good () {
+    let window: Window = initialize_screen();
     end_window();
 
+    assert_eq!( mem::size_of::<NCursesWindow>(), 96 );
+    assert_eq!( window.p_window as usize + 0, ( unsafe {&((*(window.p_window))._cury)} as *const c_short) as usize );
+    assert_eq!( window.p_window as usize + 2, ( unsafe {&((*(window.p_window))._curx)} as *const c_short) as usize );
     /*
-    assert_eq!( mem::size_of::<Window>(), 96 );
-    assert_eq!( (&window as *const Window) as usize,      (&(window._cury) as *const c_short) as usize );
-    assert_eq!( (&window as *const Window) as usize + 2,  (&(window._curx) as *const c_short) as usize );
     assert_eq!( (&window as *const Window) as usize + 4,  (&(window._maxy) as *const c_short) as usize );
     assert_eq!( (&window as *const Window) as usize + 6,  (&(window._maxx) as *const c_short) as usize );
     assert_eq!( (&window as *const Window) as usize + 8,  (&(window._begy) as *const c_short) as usize );
@@ -121,7 +117,19 @@ fn window_from_initscr_matches_my_machine() {
     assert_eq!( (&window as *const Window) as usize + 88, (&(window._pad_bottom) as *const c_short) as usize );
     assert_eq!( (&window as *const Window) as usize + 90, (&(window._pad_right) as *const c_short) as usize );
     assert_eq!( (&window as *const Window) as usize + 92, (&(window._yoffset) as *const c_short) as usize );
+    */
+}
 
+#[test]
+fn basic_ncurses_functions_do_not_break() {
+    let window: Window         = initialize_screen();
+    let message_to_print: &str = "Hello";
+    window.printw(message_to_print);
+    window.refresh();
+    //window.getch();
+    end_window();
+
+    /*
     assert_eq!( window._cury, 0 );
     assert_eq!( window._curx, message_to_print.len() as i16 );
     assert!( window._maxy > 0 );
