@@ -78,13 +78,23 @@ pub fn get_ch() {
     unsafe { getch(); }
 }
 
+pub fn will_this_work () {
+    let win: &Window = unsafe { initscr() };
+    win.printw("Hello");
+    win.refresh();
+    win.getch();
+    unsafe { endwin(); }
+}
+
 #[test]
 fn window_from_initscr_matches_my_machine() {
+    will_this_work();
+    /*
     let window: Window         = initialize_screen();
     let message_to_print: &str = "Hello";
     window.printw(message_to_print);
     window.refresh();
-    get_ch();
+    //get_ch();
     //window.getch();
     end_window();
 
@@ -152,6 +162,7 @@ fn window_from_initscr_matches_my_machine() {
     assert_eq!( window._yoffset, 0 );
     assert!( window._parent.is_null() );
     assert!( !window._line.is_null() );
+    */
 }
 
 #[link(name="ncurses")]
