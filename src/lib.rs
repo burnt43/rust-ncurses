@@ -66,8 +66,9 @@ impl Window {
 }
 
 pub fn initialize_screen() -> Window {
-    let result: &Window = unsafe { initscr() };
-    result.clone()
+    let p_window: *mut Window   = unsafe { initscr() };
+    let result: Box<Window>     = unsafe { Box::from_raw(p_window) };
+    *result
 }
 
 pub fn end_window() {
@@ -78,22 +79,12 @@ pub fn get_ch() {
     unsafe { getch(); }
 }
 
-pub fn will_this_work () {
-    let win: &Window = unsafe { initscr() };
-    win.printw("Hello");
-    win.refresh();
-    win.getch();
-    unsafe { endwin(); }
-}
-
 #[test]
 fn window_from_initscr_matches_my_machine() {
-    will_this_work();
-    /*
     let window: Window         = initialize_screen();
     let message_to_print: &str = "Hello";
-    window.printw(message_to_print);
-    window.refresh();
+    //window.printw(message_to_print);
+    //window.refresh();
     //get_ch();
     //window.getch();
     end_window();
@@ -162,12 +153,11 @@ fn window_from_initscr_matches_my_machine() {
     assert_eq!( window._yoffset, 0 );
     assert!( window._parent.is_null() );
     assert!( !window._line.is_null() );
-    */
 }
 
 #[link(name="ncurses")]
 extern {
-    fn initscr() -> &Window;
+    fn initscr() -> *mut Window;
     fn endwin()  -> c_int;
     fn wprintw(_: &Window, _: *const c_char) -> c_int;
     fn wgetch(_: &Window) -> c_int;
