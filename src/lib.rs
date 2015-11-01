@@ -60,6 +60,9 @@ impl Window {
     pub fn getch(&self) {
         unsafe { wgetch(self); }
     }
+    pub fn refresh(&self) {
+        unsafe { wrefresh(self); }
+    }
 }
 
 pub fn initialize_screen() -> Window {
@@ -71,11 +74,17 @@ pub fn end_window() {
     unsafe { endwin(); }
 }
 
+pub fn get_ch() {
+    unsafe { getch(); }
+}
+
 #[test]
 fn window_from_initscr_matches_my_machine() {
     let window: Window         = initialize_screen();
     let message_to_print: &str = "Hello";
     window.printw(message_to_print);
+    window.refresh();
+    get_ch();
     //window.getch();
     end_window();
 
@@ -123,7 +132,7 @@ fn window_from_initscr_matches_my_machine() {
     assert_eq!( window._attrs, 0 );
     assert_eq!( window._bkgd, 32 );
     assert!( !window._notimeout );
-    assert!( window._clear );
+    assert!( !window._clear );
     assert!( !window._leaveok );
     assert!( !window._scroll );
     assert!( !window._idlok );
@@ -149,6 +158,8 @@ fn window_from_initscr_matches_my_machine() {
 extern {
     fn initscr() -> &Window;
     fn endwin()  -> c_int;
-    fn wprintw(window: &Window, s: *const c_char) -> c_int;
-    fn wgetch(window: &Window) -> c_int;
+    fn wprintw(_: &Window, _: *const c_char) -> c_int;
+    fn wgetch(_: &Window) -> c_int;
+    fn wrefresh(_: &Window) -> c_int;
+    fn getch() -> c_int;
 }
