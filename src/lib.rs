@@ -1,5 +1,5 @@
 extern crate libc;
-pub mod ll;
+mod ll;
 
 use std::ffi::CString;
 use std::mem;
