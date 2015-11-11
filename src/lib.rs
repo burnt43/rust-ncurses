@@ -1,10 +1,10 @@
 extern crate libc;
-pub mod ffi;
+pub mod ll;
 
 use std::ffi::CString;
 use std::mem;
 use libc::{c_short};
-use ffi::NCursesWindow; 
+use ll::NCursesWindow; 
 
 pub struct Window {
     p_window: *const NCursesWindow,
@@ -13,23 +13,23 @@ pub struct Window {
 impl Window {
     pub fn printw(&self, s: &str) {
         let c_string: CString = CString::new(s).unwrap();
-        unsafe { ffi::wprintw(self.p_window, c_string.as_ptr()); }
+        unsafe { ll::wprintw(self.p_window, c_string.as_ptr()); }
     }
     pub fn getch(&self) {
-        unsafe { ffi::wgetch(self.p_window); }
+        unsafe { ll::wgetch(self.p_window); }
     }
     pub fn refresh(&self) {
-        unsafe { ffi::wrefresh(self.p_window); }
+        unsafe { ll::wrefresh(self.p_window); }
     }
 }
 
 pub fn initialize_screen() -> Window {
-    let p_p_window: *const NCursesWindow = unsafe { ffi::initscr() };
+    let p_p_window: *const NCursesWindow = unsafe { ll::initscr() };
     Window { p_window: p_p_window }
 }
 
 pub fn end_window() {
-    unsafe { ffi::endwin(); }
+    unsafe { ll::endwin(); }
 }
 
 #[test]
