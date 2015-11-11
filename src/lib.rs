@@ -23,19 +23,19 @@ impl Window {
     }
 }
 
-pub fn initialize_screen() -> Window {
+pub fn initscr() -> Window {
     let p_p_window: *const NCursesWindow = unsafe { ll::initscr() };
     Window { p_window: p_p_window }
 }
 
-pub fn end_window() {
+pub fn endwin() {
     unsafe { ll::endwin(); }
 }
 
 #[test]
 fn memory_layout_of_ncurses_window_is_good () {
-    let window: Window = initialize_screen();
-    end_window();
+    let window: Window = initscr();
+    endwin();
 
     assert_eq!( mem::size_of::<NCursesWindow>(), 96 );
     assert_eq!( window.p_window as usize + 0, ( unsafe {&((*(window.p_window))._cury)} as *const c_short) as usize );
@@ -76,12 +76,12 @@ fn memory_layout_of_ncurses_window_is_good () {
 
 #[test]
 fn basic_ncurses_functions_do_not_break() {
-    let window: Window         = initialize_screen();
+    let window: Window         = initscr();
     let message_to_print: &str = "for the tests to continue, press any key...";
     window.printw(message_to_print);
     window.refresh();
     window.getch();
-    end_window();
+    endwin();
 
     /*
     assert_eq!( window._cury, 0 );
