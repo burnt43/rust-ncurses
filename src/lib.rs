@@ -1,56 +1,10 @@
 extern crate libc;
-use libc::{c_int,c_short,c_ulong,c_char};
+pub mod ffi;
+
 use std::ffi::CString;
 use std::mem;
-
-#[repr(C)]
-struct Ldat;
-
-#[repr(C)]
-#[derive(Clone)]
-struct NCursesWindow {
-    _cury: c_short,
-    _curx: c_short,
-    _maxy: c_short,
-    _maxx: c_short,
-    _begy: c_short,
-    _begx: c_short,
-
-    _flags: c_short,
-
-    _attrs: c_ulong,
-    _bkgd: c_ulong,
-
-    _notimeout: bool,
-    _clear: bool,
-    _leaveok: bool,
-    _scroll: bool,
-    _idlok: bool,
-    _idcok: bool,
-    _immed: bool,
-    _sync: bool,
-    _use_keypad: bool,
-    _delay: c_int,
-
-    _line: *const Ldat,
-
-    _regtop: c_short,
-    _regbottom: c_short,
-
-    _parx: c_int,
-    _pary: c_int,
-
-    _parent: *const Window,
-
-    _pad_y: c_short,
-    _pad_x: c_short,
-    _pad_top: c_short,
-    _pad_left: c_short,
-    _pad_bottom: c_short,
-    _pad_right: c_short,
-
-    _yoffset: c_short,
-}
+use libc::{c_short};
+use ffi::NCursesWindow; 
 
 pub struct Window {
     p_window: *const NCursesWindow,
@@ -59,23 +13,23 @@ pub struct Window {
 impl Window {
     pub fn printw(&self, s: &str) {
         let c_string: CString = CString::new(s).unwrap();
-        unsafe { wprintw(self.p_window, c_string.as_ptr()); }
+        unsafe { ffi::wprintw(self.p_window, c_string.as_ptr()); }
     }
     pub fn getch(&self) {
-        unsafe { wgetch(self.p_window); }
+        unsafe { ffi::wgetch(self.p_window); }
     }
     pub fn refresh(&self) {
-        unsafe { wrefresh(self.p_window); }
+        unsafe { ffi::wrefresh(self.p_window); }
     }
 }
 
 pub fn initialize_screen() -> Window {
-    let p_p_window: *const NCursesWindow = unsafe { initscr() };
+    let p_p_window: *const NCursesWindow = unsafe { ffi::initscr() };
     Window { p_window: p_p_window }
 }
 
 pub fn end_window() {
-    unsafe { endwin(); }
+    unsafe { ffi::endwin(); }
 }
 
 #[test]
@@ -123,10 +77,10 @@ fn memory_layout_of_ncurses_window_is_good () {
 #[test]
 fn basic_ncurses_functions_do_not_break() {
     let window: Window         = initialize_screen();
-    let message_to_print: &str = "Hello";
+    let message_to_print: &str = "for the tests to continue, press any key...";
     window.printw(message_to_print);
     window.refresh();
-    //window.getch();
+    window.getch();
     end_window();
 
     /*
@@ -161,13 +115,4 @@ fn basic_ncurses_functions_do_not_break() {
     assert!( window._parent.is_null() );
     assert!( !window._line.is_null() );
     */
-}
-
-#[link(name="ncurses")]
-extern {
-    fn initscr() -> *const NCursesWindow;
-    fn endwin()  -> c_int;
-    fn wprintw(_: *const NCursesWindow, _: *const c_char) -> c_int;
-    fn wgetch(_: *const NCursesWindow) -> c_int;
-    fn wrefresh(_: *const NCursesWindow) -> c_int;
 }
