@@ -17,6 +17,9 @@ impl Window {
     pub fn mvprintw(&self, pos: (i32,i32), s: &str) {
         unsafe { ll::mvwprintw( self.p_window, pos.0, pos.1, CString::new(s).unwrap().as_ptr() ); }
     }
+    pub fn getyx(&self) -> (i16,i16) {
+        unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
+    }
     pub fn getch(&self) {
         unsafe { ll::wgetch(self.p_window); }
     }
@@ -83,6 +86,7 @@ fn basic_ncurses_functions_do_not_break() {
     window.printw(message_to_print);
     window.mvprintw((5,0),message_to_print);
     window.mvprintw((10,10),message_to_print);
+    assert_eq!( window.getyx(), (10,10 + message_to_print.len() as i16) );
     window.refresh();
     window.getch();
     endwin();
