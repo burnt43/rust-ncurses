@@ -12,8 +12,10 @@ pub struct Window {
 
 impl Window {
     pub fn printw(&self, s: &str) {
-        let c_string: CString = CString::new(s).unwrap();
-        unsafe { ll::wprintw(self.p_window, c_string.as_ptr()); }
+        unsafe { ll::wprintw( self.p_window, CString::new(s).unwrap().as_ptr() ); }
+    }
+    pub fn mvprintw(&self, pos: (i32,i32), s: &str) {
+        unsafe { ll::mvwprintw( self.p_window, pos.0, pos.1, CString::new(s).unwrap().as_ptr() ); }
     }
     pub fn getch(&self) {
         unsafe { ll::wgetch(self.p_window); }
@@ -79,6 +81,8 @@ fn basic_ncurses_functions_do_not_break() {
     let window: Window         = initscr();
     let message_to_print: &str = "for the tests to continue, press any key...";
     window.printw(message_to_print);
+    window.mvprintw((5,0),message_to_print);
+    window.mvprintw((10,10),message_to_print);
     window.refresh();
     window.getch();
     endwin();

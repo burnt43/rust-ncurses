@@ -56,4 +56,5 @@ extern {
     pub fn wprintw(_: *const NCursesWindow, _: *const c_char) -> c_int;
     pub fn wgetch(_: *const NCursesWindow) -> c_int;
     pub fn wrefresh(_: *const NCursesWindow) -> c_int;
+    pub fn mvwprintw(_: *const NCursesWindow, _: c_int, _: c_int, _: *const c_char) -> c_int;
 }
