@@ -7,7 +7,7 @@ pub enum Attribute {
 impl Attribute {
     pub fn to_attr_t(&self) -> attr_t {
         match self {
-            Bold => 8192
+            Bold => 2097152 // 2^21
         }
     }
 }
