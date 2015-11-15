@@ -57,4 +57,11 @@ extern {
     pub fn wgetch(_: *const NCursesWindow) -> c_int;
     pub fn wrefresh(_: *const NCursesWindow) -> c_int;
     pub fn mvwprintw(_: *const NCursesWindow, _: c_int, _: c_int, _: *const c_char) -> c_int;
+    pub fn keypad(_: *const NCursesWindow, _: bool) -> c_int;
+    pub fn raw() -> c_int;
+    pub fn noraw() -> c_int;
+    pub fn cbreak() -> c_int;
+    pub fn nocbreak() -> c_int;
+    pub fn echo() -> c_int;
+    pub fn noecho() -> c_int;
 }

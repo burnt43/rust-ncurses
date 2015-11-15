@@ -26,6 +26,9 @@ impl Window {
     pub fn refresh(&self) {
         unsafe { ll::wrefresh(self.p_window); }
     }
+    pub fn keypad(&self, enabled: bool) {
+        unsafe { ll::keypad(self.p_window,enabled); }
+    }
 }
 
 pub fn initscr() -> Window {
@@ -37,6 +40,41 @@ pub fn endwin() {
     unsafe { ll::endwin(); }
 }
 
+pub fn raw() {
+    unsafe { ll::raw(); }
+}
+
+pub fn noraw() {
+    unsafe { ll::noraw(); }
+}
+
+pub fn cbreak() {
+    unsafe { ll::cbreak(); }
+}
+
+pub fn nocbreak() {
+    unsafe { ll::nocbreak(); }
+}
+
+pub fn echo() {
+    unsafe { ll::echo(); }
+}
+
+pub fn noecho() {
+    unsafe { ll::noecho(); }
+}
+
+#[test]
+fn hello_world() {
+    let window: Window = initscr();
+    window.keypad(true);
+    window.printw("Hello World!!!!");
+    window.refresh();
+    window.getch();
+    endwin();
+}
+
+/*
 #[test]
 fn memory_layout_of_ncurses_window_is_good () {
     let window: Window = initscr();
@@ -124,3 +162,4 @@ fn basic_ncurses_functions_do_not_break() {
     assert!( !window._line.is_null() );
     */
 }
+*/
