@@ -4,8 +4,12 @@ pub enum Attribute {
     Bold,
 }
 
-impl Attribute {
-    pub fn to_attr_t(&self) -> attr_t {
+pub trait ScalarAttribute {
+    fn to_attr_t(&self) -> attr_t;
+}
+
+impl ScalarAttribute for Attribute {
+    fn to_attr_t(&self) -> attr_t {
         match self {
             Bold => 2097152 // 2^21
         }

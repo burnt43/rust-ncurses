@@ -6,7 +6,7 @@ use std::ffi::CString;
 use std::mem;
 use libc::{c_short};
 use ll::NCursesWindow;
-use attribute::Attribute;
+use attribute::{Attribute, ScalarAttribute};
 
 pub struct Window {
     p_window: *const NCursesWindow,
@@ -31,7 +31,7 @@ impl Window {
     pub fn keypad(&self, enabled: bool) {
         unsafe { ll::keypad(self.p_window,enabled); }
     }
-    pub fn attr_on(&self, attr: Attribute) {
+    pub fn attr_on<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wattr_on(self.p_window,attr.to_attr_t(),0); }
     }
 }
