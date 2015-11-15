@@ -1,22 +1,26 @@
 use libc::{c_int,c_short,c_ulong,c_char};
 
+pub type size_t = c_short;
+pub type chtype = c_ulong;
+pub type attr_t = chtype;
+
 #[repr(C)]
 struct Ldat;
 
 #[repr(C)]
 #[derive(Clone)]
 pub struct NCursesWindow {
-    pub _cury: c_short,
-    pub _curx: c_short,
-    _maxy: c_short,
-    _maxx: c_short,
-    _begy: c_short,
-    _begx: c_short,
+    pub _cury: size_t,
+    pub _curx: size_t,
+    _maxy: size_t,
+    _maxx: size_t,
+    _begy: size_t,
+    _begx: size_t,
 
     _flags: c_short,
 
-    _attrs: c_ulong,
-    _bkgd: c_ulong,
+    _attrs: attr_t,
+    _bkgd: chtype,
 
     _notimeout: bool,
     _clear: bool,
@@ -31,22 +35,22 @@ pub struct NCursesWindow {
 
     _line: *const Ldat,
 
-    _regtop: c_short,
-    _regbottom: c_short,
+    _regtop: size_t,
+    _regbottom: size_t,
 
     _parx: c_int,
     _pary: c_int,
 
     _parent: *const NCursesWindow,
 
-    _pad_y: c_short,
-    _pad_x: c_short,
-    _pad_top: c_short,
-    _pad_left: c_short,
-    _pad_bottom: c_short,
-    _pad_right: c_short,
+    _pad_y: size_t,
+    _pad_x: size_t,
+    _pad_top: size_t,
+    _pad_left: size_t,
+    _pad_bottom: size_t,
+    _pad_right: size_t,
 
-    _yoffset: c_short,
+    _yoffset: size_t,
 }
 
 #[link(name="ncurses")]
@@ -64,4 +68,5 @@ extern {
     pub fn nocbreak() -> c_int;
     pub fn echo() -> c_int;
     pub fn noecho() -> c_int;
+    pub fn wattr_on(_: *const NCursesWindow) -> c_int;
 }
