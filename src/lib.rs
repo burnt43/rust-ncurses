@@ -1,5 +1,7 @@
 extern crate libc;
 mod ll;
+
+#[macro_use]
 mod attribute;
 
 use std::ffi::CString;
@@ -76,10 +78,10 @@ pub fn noecho() {
 fn hello_world() {
     let window: Window = initscr();
     window.keypad(true);
-    window.attr_on(Attribute::Bold);
-    window.printw("THIS SHOULD BE BOLD");
-    window.attr_off(Attribute::Bold);
-    window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD");
+    window.attr_on(attributes![Attribute::Bold, Attribute::Underline]);
+    window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
+    window.attr_off(attributes![Attribute::Bold, Attribute::Underline]);
+    window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
     window.refresh();
     window.getch();
     endwin();

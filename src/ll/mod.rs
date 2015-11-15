@@ -1,4 +1,5 @@
 use libc::{c_int,c_short,c_ulong,c_char};
+use super::attribute::{ScalarAttribute,Attribute};
 
 pub type size_t = c_short;
 pub type chtype = c_ulong;
