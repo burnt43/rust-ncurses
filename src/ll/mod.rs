@@ -68,5 +68,5 @@ extern {
     pub fn nocbreak() -> c_int;
     pub fn echo() -> c_int;
     pub fn noecho() -> c_int;
-    pub fn wattr_on(_: *const NCursesWindow) -> c_int;
+    pub fn wattr_on(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
 }
