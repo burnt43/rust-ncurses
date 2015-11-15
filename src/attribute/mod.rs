@@ -15,3 +15,9 @@ impl ScalarAttribute for Attribute {
         }
     }
 }
+
+impl ScalarAttribute for [Attribute] {
+    fn to_attr_t(&self) -> attr_t {
+        2097152
+    }
+}

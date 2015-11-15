@@ -32,7 +32,10 @@ impl Window {
         unsafe { ll::keypad(self.p_window,enabled); }
     }
     pub fn attr_on<T: ScalarAttribute>(&self, attr: T) {
-        unsafe { ll::wattr_on(self.p_window,attr.to_attr_t(),0); }
+        unsafe { ll::wattr_on(self.p_window, attr.to_attr_t(), 0); }
+    }
+    pub fn attr_off<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { ll::wattr_off(self.p_window, attr.to_attr_t(), 0); }
     }
 }
 
@@ -74,7 +77,9 @@ fn hello_world() {
     let window: Window = initscr();
     window.keypad(true);
     window.attr_on(Attribute::Bold);
-    window.printw("Hello World!!!!");
+    window.printw("THIS SHOULD BE BOLD");
+    window.attr_off(Attribute::Bold);
+    window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD");
     window.refresh();
     window.getch();
     endwin();
