@@ -71,4 +71,5 @@ extern {
     pub fn noecho() -> c_int;
     pub fn wattr_on(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
     pub fn wattr_off(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
+    pub fn waddch(_: *const NCursesWindow, _: chtype);
 }

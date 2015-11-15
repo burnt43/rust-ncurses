@@ -39,6 +39,9 @@ impl Window {
     pub fn attr_off<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wattr_off(self.p_window, attr.to_attr_t(), 0); }
     }
+    pub fn addch<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { ll::waddch(self.p_window, attr.to_attr_t() ); }
+    }
 }
 
 pub fn initscr() -> Window {
@@ -76,12 +79,18 @@ pub fn noecho() {
 
 #[test]
 fn hello_world() {
+    let s = "hello";
+    let r = "world";
+    let t = s | r;
     let window: Window = initscr();
+    noecho();
     window.keypad(true);
     window.attr_on(attributes![Attribute::Bold, Attribute::Underline]);
     window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
     window.attr_off(attributes![Attribute::Bold, Attribute::Underline]);
     window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
+    window.mvprintw((3,0),"Press 'x' to exit");
+    window.addch('a');
     window.refresh();
     loop {
         match window.getch() {

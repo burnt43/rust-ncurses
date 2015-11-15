@@ -34,3 +34,9 @@ impl<'a> ScalarAttribute for &'a[Attribute] {
         result
     }
 }
+
+impl ScalarAttribute for char {
+    fn to_attr_t(&self) -> attr_t {
+        *self as attr_t
+    }
+}
