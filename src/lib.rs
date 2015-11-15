@@ -24,8 +24,8 @@ impl Window {
     pub fn getyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
     }
-    pub fn getch(&self) {
-        unsafe { ll::wgetch(self.p_window); }
+    pub fn getch(&self) -> Option<char> {
+        std::char::from_u32( unsafe { ll::wgetch(self.p_window) } as u32 )
     }
     pub fn refresh(&self) {
         unsafe { ll::wrefresh(self.p_window); }
@@ -83,7 +83,13 @@ fn hello_world() {
     window.attr_off(attributes![Attribute::Bold, Attribute::Underline]);
     window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
     window.refresh();
-    window.getch();
+    loop {
+        match window.getch() {
+            Some('x') => break,
+            Some(_)   => {},
+            None      => {},
+        }
+    }
     endwin();
 }
 
