@@ -79,18 +79,15 @@ pub fn noecho() {
 
 #[test]
 fn hello_world() {
-    let s = "hello";
-    let r = "world";
-    let t = s | r;
     let window: Window = initscr();
     noecho();
     window.keypad(true);
-    window.attr_on(attributes![Attribute::Bold, Attribute::Underline]);
+    window.attr_on(Attribute::Bold | Attribute::Underline);
     window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
-    window.attr_off(attributes![Attribute::Bold, Attribute::Underline]);
+    window.attr_off(Attribute::Bold | Attribute::Underline);
     window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
-    window.mvprintw((3,0),"Press 'x' to exit");
-    window.addch('a');
+    window.mvprintw((3,0),"Press 'x' to exit ");
+    window.addch('a' | Attribute::Bold | Attribute::Underline);
     window.refresh();
     loop {
         match window.getch() {

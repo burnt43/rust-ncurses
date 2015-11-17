@@ -1,11 +1,14 @@
 use super::ll::attr_t;
+use std::ops::{BitOr};
 
+/* WILL BE REMOVED
 #[macro_export]
 macro_rules! attributes {
     ( $( $attr:expr ),+ ) => {
         &[$( $attr ),+] as &[Attribute]
     };
 }
+*/
 
 pub enum Attribute {
     Underline,
@@ -25,6 +28,19 @@ impl ScalarAttribute for Attribute {
     }
 }
 
+impl ScalarAttribute for attr_t {
+    fn to_attr_t(&self) -> attr_t {
+        *self
+    }
+}
+
+impl ScalarAttribute for char {
+    fn to_attr_t(&self) -> attr_t {
+        *self as attr_t
+    }
+}
+
+/* WILL BE REMOVED
 impl<'a> ScalarAttribute for &'a[Attribute] {
     fn to_attr_t(&self) -> attr_t {
         let mut result: attr_t = 0;
@@ -34,9 +50,25 @@ impl<'a> ScalarAttribute for &'a[Attribute] {
         result
     }
 }
+*/
 
-impl ScalarAttribute for char {
-    fn to_attr_t(&self) -> attr_t {
-        *self as attr_t
+impl BitOr for Attribute {
+    type Output = attr_t;
+    fn bitor(self, rhs: Attribute) -> attr_t {
+        self.to_attr_t() | rhs.to_attr_t()
+    }
+}
+
+impl BitOr<Attribute> for char {
+    type Output = attr_t;
+    fn bitor(self, rhs: Attribute) -> attr_t {
+        self.to_attr_t() | rhs.to_attr_t()
+    }
+}
+
+impl BitOr<Attribute> for attr_t {
+    type Output = attr_t;
+    fn bitor(self, rhs: Attribute) -> attr_t {
+        self.to_attr_t() | rhs.to_attr_t()
     }
 }
