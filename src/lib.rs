@@ -88,6 +88,7 @@ fn hello_world() {
     window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
     window.mvprintw((3,0),"Press 'x' to exit ");
     window.addch('a' | Attribute::Bold | Attribute::Underline);
+    window.addch('b');
     window.refresh();
     loop {
         match window.getch() {
