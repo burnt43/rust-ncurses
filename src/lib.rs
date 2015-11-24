@@ -15,14 +15,12 @@ pub struct Window {
 }
 
 impl Window {
+    // Implemented Functions
     pub fn printw(&self, s: &str) {
         unsafe { ll::wprintw( self.p_window, CString::new(s).unwrap().as_ptr() ); }
     }
     pub fn mvprintw(&self, pos: (i32,i32), s: &str) {
         unsafe { ll::mvwprintw( self.p_window, pos.0, pos.1, CString::new(s).unwrap().as_ptr() ); }
-    }
-    pub fn getyx(&self) -> (i16,i16) {
-        unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
     }
     pub fn getch(&self) -> Option<char> {
         std::char::from_u32( unsafe { ll::wgetch(self.p_window) } as u32 )
@@ -41,6 +39,13 @@ impl Window {
     }
     pub fn addch<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::waddch(self.p_window, attr.to_attr_t() ); }
+    }
+    pub fn addnstr(&self, string: &str, num_chars: i32) {
+        unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
+    }
+    // Generated
+    pub fn getyx(&self) -> (i16,i16) {
+        unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
     }
 }
 
@@ -89,6 +94,7 @@ fn hello_world() {
     window.mvprintw((3,0),"Press 'x' to exit ");
     window.addch('a' | Attribute::Bold | Attribute::Underline);
     window.addch('b');
+    window.addnstr("This is a really long string and it has a lot of characters and I am curious to see what will happen when it reaches the edge of the screen how will ncurses to if I give it -1 as the second parameter?",-1);
     window.refresh();
     loop {
         match window.getch() {
