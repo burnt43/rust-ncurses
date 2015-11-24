@@ -73,4 +73,5 @@ extern {
     pub fn wattr_off(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
     pub fn waddch(_: *const NCursesWindow, _: chtype);
     pub fn waddnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
+    pub fn wgetnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
 }

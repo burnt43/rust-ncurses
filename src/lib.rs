@@ -6,7 +6,7 @@ mod attribute;
 
 use std::ffi::CString;
 use std::mem;
-use libc::{c_short};
+use libc::{c_short,c_char};
 use ll::NCursesWindow;
 use attribute::{Attribute, ScalarAttribute};
 
@@ -42,6 +42,14 @@ impl Window {
     }
     pub fn addnstr(&self, string: &str, num_chars: i32) {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
+    }
+    pub fn getnstr(&self, num_chars: i32) -> Result<String,std::str::Utf8Error> {
+        let buffer: Vec<u8> = vec![1;128];
+        let p_str: *mut c_char = CString::new(buffer).unwrap().into_raw();
+        unsafe { ll::wgetnstr(self.p_window, p_str, num_chars); }
+        let read_string: CString = unsafe { CString::from_raw(p_str) };
+        let result: &str = try!( read_string.to_str() );
+        Ok(result.to_string())
     }
     // Generated
     pub fn getyx(&self) -> (i16,i16) {
@@ -95,7 +103,12 @@ fn hello_world() {
     window.addch('a' | Attribute::Bold | Attribute::Underline);
     window.addch('b');
     window.addnstr("This is a really long string and it has a lot of characters and I am curious to see what will happen when it reaches the edge of the screen how will ncurses to if I give it -1 as the second parameter?",-1);
+    window.mvprintw((14,0),"Please type a string: ");
     window.refresh();
+    match window.getnstr(-1) {
+        Ok(s) => window.mvprintw((15,0),&s),
+        Err(_) => {},
+    }
     loop {
         match window.getch() {
             Some('x') => break,
