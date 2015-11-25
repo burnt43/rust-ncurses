@@ -54,6 +54,12 @@ impl Window {
     pub fn mv(&self, pos: (i32,i32)) {
         unsafe { ll::wmove(self.p_window,pos.0,pos.1); }
     }
+    pub fn scrl(&self, n: i32) {
+        unsafe { ll::wscrl(self.p_window,n); }
+    }
+    pub fn scrollok(&self, ok: bool) {
+        unsafe { ll::scrollok(self.p_window, ok); }
+    }
     // Generated
     pub fn getmaxyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._maxy + 1, (*(self.p_window))._maxx + 1) }
@@ -100,6 +106,7 @@ pub fn noecho() {
 fn hello_world() {
     let window: Window = initscr();
     window.keypad(true);
+    window.scrollok(true);
     window.attr_on(Attribute::Bold | Attribute::Underline);
     window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
     window.attr_off(Attribute::Bold | Attribute::Underline);
@@ -126,6 +133,14 @@ fn hello_world() {
     loop {
         match window.getch() {
             Some('x') => break,
+            Some('k') => {
+                window.scrl(1);
+                window.refresh();
+            },
+            Some('j') => {
+                window.scrl(-1);
+                window.refresh();
+            }
             Some(_)   => {},
             None      => {},
         }
