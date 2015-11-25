@@ -74,4 +74,5 @@ extern {
     pub fn waddch(_: *const NCursesWindow, _: chtype);
     pub fn waddnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
     pub fn wgetnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
+    pub fn wmove(_: *const NCursesWindow, _: c_int, _: c_int) -> c_int;
 }

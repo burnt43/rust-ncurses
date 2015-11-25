@@ -51,6 +51,9 @@ impl Window {
         let result: &str = try!( read_string.to_str() );
         Ok(result.to_string())
     }
+    pub fn mv(&self, pos: (i32,i32)) {
+        unsafe { ll::wmove(self.p_window,pos.0,pos.1); }
+    }
     // Generated
     pub fn getmaxyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._maxy + 1, (*(self.p_window))._maxx + 1) }
@@ -96,7 +99,6 @@ pub fn noecho() {
 #[test]
 fn hello_world() {
     let window: Window = initscr();
-    noecho();
     window.keypad(true);
     window.attr_on(Attribute::Bold | Attribute::Underline);
     window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
@@ -108,13 +110,19 @@ fn hello_world() {
     window.addnstr("This is a really long string and it has a lot of characters and I am curious to see what will happen when it reaches the edge of the screen how will ncurses to if I give it -1 as the second parameter?",-1);
     window.mvprintw((12,0),&format!("Max Y: {}",window.getmaxyx().0));
     window.mvprintw((13,0),&format!("Max X: {}",window.getmaxyx().1));
+    window.mv( (15,100) );
+    window.addch('J');
+    window.mv( (16,101) );
+    window.addch('A');
     window.mvprintw((14,0),"Please type a string: ");
+    echo();
     window.refresh();
 
     match window.getnstr(-1) {
         Ok(s) => window.mvprintw((15,0),&s),
         Err(_) => {},
     }
+    noecho();
     loop {
         match window.getch() {
             Some('x') => break,
