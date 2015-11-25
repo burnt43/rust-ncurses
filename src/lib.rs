@@ -52,6 +52,9 @@ impl Window {
         Ok(result.to_string())
     }
     // Generated
+    pub fn getmaxyx(&self) -> (i16,i16) {
+        unsafe { ( (*(self.p_window))._maxy + 1, (*(self.p_window))._maxx + 1) }
+    }
     pub fn getyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
     }
@@ -103,8 +106,11 @@ fn hello_world() {
     window.addch('a' | Attribute::Bold | Attribute::Underline);
     window.addch('b');
     window.addnstr("This is a really long string and it has a lot of characters and I am curious to see what will happen when it reaches the edge of the screen how will ncurses to if I give it -1 as the second parameter?",-1);
+    window.mvprintw((12,0),&format!("Max Y: {}",window.getmaxyx().0));
+    window.mvprintw((13,0),&format!("Max X: {}",window.getmaxyx().1));
     window.mvprintw((14,0),"Please type a string: ");
     window.refresh();
+
     match window.getnstr(-1) {
         Ok(s) => window.mvprintw((15,0),&s),
         Err(_) => {},

@@ -13,8 +13,8 @@ struct Ldat;
 pub struct NCursesWindow {
     pub _cury: size_t,
     pub _curx: size_t,
-    _maxy: size_t,
-    _maxx: size_t,
+    pub _maxy: size_t,
+    pub _maxx: size_t,
     _begy: size_t,
     _begx: size_t,
 
