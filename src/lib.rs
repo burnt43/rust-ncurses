@@ -75,7 +75,7 @@ impl Window {
     pub fn getyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
     }
-    pub fn boxed<T: ScalarAttribute>(&self, vertical: T, horizontal: T) {
+    pub fn boxify<T: ScalarAttribute>(&self, vertical: T, horizontal: T) {
         unsafe { ll::wborder(self.p_window, vertical.to_attr_t(), vertical.to_attr_t(), horizontal.to_attr_t(), horizontal.to_attr_t(),0,0,0,0); }
     }
 }
@@ -137,7 +137,7 @@ fn hello_world() {
     window.refresh();
 
     let other_win: Window = Window::new( (5,50), (15,75) );
-    other_win.boxed(0,0);
+    other_win.boxify(0,0);
     other_win.mvprintw((1,1),"AAA");
     other_win.refresh();
 
