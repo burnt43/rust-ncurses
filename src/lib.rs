@@ -16,6 +16,11 @@ pub struct Window {
 
 impl Window {
     // Implemented Functions
+    pub fn new( dimensions: (i32,i32), starting_point: (i32,i32) ) -> Window {
+        unsafe { 
+            Window { p_window: ll::newwin( dimensions.0, dimensions.1, starting_point.0, starting_point.1 ) } 
+        }
+    }
     pub fn printw(&self, s: &str) {
         unsafe { ll::wprintw( self.p_window, CString::new(s).unwrap().as_ptr() ); }
     }
@@ -60,12 +65,18 @@ impl Window {
     pub fn scrollok(&self, ok: bool) {
         unsafe { ll::scrollok(self.p_window, ok); }
     }
+    pub fn border<T: ScalarAttribute>(&self, left_side: T, right_side: T, top_side: T, bottom_side: T, top_left: T, top_right: T, bottom_left: T, bottom_right: T) {
+        unsafe { ll::wborder(self.p_window, left_side.to_attr_t(), right_side.to_attr_t(), top_side.to_attr_t(), bottom_side.to_attr_t(), top_left.to_attr_t(), top_right.to_attr_t(), bottom_left.to_attr_t(), bottom_right.to_attr_t() ); }
+    }
     // Generated
     pub fn getmaxyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._maxy + 1, (*(self.p_window))._maxx + 1) }
     }
     pub fn getyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
+    }
+    pub fn boxed<T: ScalarAttribute>(&self, vertical: T, horizontal: T) {
+        unsafe { ll::wborder(self.p_window, vertical.to_attr_t(), vertical.to_attr_t(), horizontal.to_attr_t(), horizontal.to_attr_t(),0,0,0,0); }
     }
 }
 
@@ -124,6 +135,11 @@ fn hello_world() {
     window.mvprintw((14,0),"Please type a string: ");
     echo();
     window.refresh();
+
+    let other_win: Window = Window::new( (5,50), (15,75) );
+    other_win.boxed(0,0);
+    other_win.mvprintw((1,1),"AAA");
+    other_win.refresh();
 
     match window.getnstr(-1) {
         Ok(s) => window.mvprintw((15,0),&s),
