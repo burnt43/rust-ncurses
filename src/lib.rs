@@ -7,7 +7,7 @@ mod attribute;
 use std::ffi::CString;
 use std::mem;
 use libc::{c_short,c_char};
-use ll::{NCursesWindow,attr_t};
+use ll::{NCursesWindow,attr_t,chtype};
 use attribute::{Attribute, ScalarAttribute};
 
 pub struct Window {
@@ -48,8 +48,8 @@ impl Window {
     pub fn addnstr(&self, string: &str, num_chars: i32) {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
     }
-    pub fn addchnstr(&self, chars: Vec<attr_t>, num_chars: i32) {
-        let mut clone : Vec<attr_t> = chars.clone();
+    pub fn addchnstr(&self, chars: Vec<chtype>, num_chars: i32) {
+        let mut clone : Vec<chtype> = chars.clone();
         clone.push(0);
         unsafe { ll::waddchnstr(self.p_window, clone.as_ptr(), num_chars); }
     }
