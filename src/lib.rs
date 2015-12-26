@@ -117,6 +117,10 @@ pub fn baudrate() -> i32 {
     unsafe { ll::baudrate() }
 }
 
+pub fn beep() {
+    unsafe { ll::beep(); }
+}
+
 #[test]
 fn hello_world() {
     let window: Window = initscr();
@@ -155,10 +159,12 @@ fn hello_world() {
         match window.getch() {
             Some('x') => break,
             Some('k') => {
+                beep();
                 window.scrl(1);
                 window.refresh();
             },
             Some('j') => {
+                beep();
                 window.scrl(-1);
                 window.refresh();
             }

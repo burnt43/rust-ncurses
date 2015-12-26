@@ -80,4 +80,5 @@ extern {
     pub fn newwin(_: c_int, _: c_int, _: c_int, _: c_int) -> *const NCursesWindow;
     pub fn wborder(_: *const NCursesWindow, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype) -> c_int;
     pub fn baudrate() -> c_int;
+    pub fn beep() -> c_int;
 }
