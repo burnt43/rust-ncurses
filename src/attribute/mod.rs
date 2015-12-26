@@ -10,6 +10,17 @@ macro_rules! attributes {
 }
 */
 
+#[macro_export]
+macro_rules! chtype_vec {
+    ( $( $x:expr ),* ) => {
+        {
+            let mut temp_vec : Vec<attr_t> = Vec::new();
+            $( temp_vec.push($x.to_attr_t()); )*
+            temp_vec
+        }
+    };
+}
+
 pub enum Attribute {
     Underline,
     Bold,

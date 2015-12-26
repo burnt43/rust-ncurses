@@ -1,5 +1,7 @@
 extern crate libc;
 mod ll;
+
+#[macro_use]
 mod attribute;
 
 use std::ffi::CString;
@@ -46,10 +48,10 @@ impl Window {
     pub fn addnstr(&self, string: &str, num_chars: i32) {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
     }
-    pub fn addchnstr<T: ScalarAttribute>(&self, chars: Vec<T>, num_chars: i32) {
-        let mut attr_t_collection : Vec<attr_t> = chars.iter().map(|c| c.to_attr_t()).collect();
-        attr_t_collection.push(0);
-        unsafe { ll::waddchnstr(self.p_window, attr_t_collection.as_ptr(), num_chars); }
+    pub fn addchnstr(&self, chars: Vec<attr_t>, num_chars: i32) {
+        let mut clone : Vec<attr_t> = chars.clone();
+        clone.push(0);
+        unsafe { ll::waddchnstr(self.p_window, clone.as_ptr(), num_chars); }
     }
     pub fn getnstr(&self, num_chars: i32) -> Result<String,std::str::Utf8Error> {
         let buffer: Vec<u8> = vec![1;128];
@@ -142,7 +144,7 @@ fn hello_world() {
     window.mvprintw((13,0),&format!("Max X: {}",window.getmaxyx().1));
     window.mvprintw((25,0),&format!("baudrate: {}",baudrate()));
     window.mv( (24,0) );
-    window.addchnstr(vec!['a', 'b', 'c', 'd', 'e'],4);
+    window.addchnstr(chtype_vec!['a', 'b', 'c', 'd', 'e'],4);
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );
