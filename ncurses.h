@@ -572,8 +572,8 @@ typedef int (*NCURSES_OUTC)(int);
  * requirements.
  */
 
-AS waddch extern NCURSES_EXPORT(int) addch (const chtype);			/* generated */
-extern NCURSES_EXPORT(int) addchnstr (const chtype *, int);		/* generated */
+YES, USE waddch extern NCURSES_EXPORT(int) addch (const chtype);			/* generated */
+YES, USE waddchnstr extern NCURSES_EXPORT(int) addchnstr (const chtype *, int);		/* generated */
 extern NCURSES_EXPORT(int) addchstr (const chtype *);			/* generated */
 extern NCURSES_EXPORT(int) addnstr (const char *, int);			/* generated */
 extern NCURSES_EXPORT(int) addstr (const char *);			/* generated */

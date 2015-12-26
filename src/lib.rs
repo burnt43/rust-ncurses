@@ -1,13 +1,11 @@
 extern crate libc;
 mod ll;
-
-#[macro_use]
 mod attribute;
 
 use std::ffi::CString;
 use std::mem;
 use libc::{c_short,c_char};
-use ll::NCursesWindow;
+use ll::{NCursesWindow,attr_t};
 use attribute::{Attribute, ScalarAttribute};
 
 pub struct Window {
@@ -48,6 +46,11 @@ impl Window {
     pub fn addnstr(&self, string: &str, num_chars: i32) {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
     }
+    pub fn addchnstr<T: ScalarAttribute>(&self, chars: Vec<T>, num_chars: i32) {
+        let mut attr_t_collection : Vec<attr_t> = chars.iter().map(|c| c.to_attr_t()).collect();
+        attr_t_collection.push(0);
+        unsafe { ll::waddchnstr(self.p_window, attr_t_collection.as_ptr(), num_chars); }
+    }
     pub fn getnstr(&self, num_chars: i32) -> Result<String,std::str::Utf8Error> {
         let buffer: Vec<u8> = vec![1;128];
         let p_str: *mut c_char = CString::new(buffer).unwrap().into_raw();
@@ -80,6 +83,7 @@ impl Window {
     }
 }
 
+// Global Functions
 pub fn initscr() -> Window {
     let p_p_window: *const NCursesWindow = unsafe { ll::initscr() };
     Window { p_window: p_p_window }
@@ -137,6 +141,8 @@ fn hello_world() {
     window.mvprintw((12,0),&format!("Max Y: {}",window.getmaxyx().0));
     window.mvprintw((13,0),&format!("Max X: {}",window.getmaxyx().1));
     window.mvprintw((25,0),&format!("baudrate: {}",baudrate()));
+    window.mv( (24,0) );
+    window.addchnstr(vec!['a', 'b', 'c', 'd', 'e'],4);
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );
