@@ -113,6 +113,10 @@ pub fn noecho() {
     unsafe { ll::noecho(); }
 }
 
+pub fn baudrate() -> i32 {
+    unsafe { ll::baudrate() }
+}
+
 #[test]
 fn hello_world() {
     let window: Window = initscr();
@@ -128,6 +132,7 @@ fn hello_world() {
     window.addnstr("This is a really long string and it has a lot of characters and I am curious to see what will happen when it reaches the edge of the screen how will ncurses to if I give it -1 as the second parameter?",-1);
     window.mvprintw((12,0),&format!("Max Y: {}",window.getmaxyx().0));
     window.mvprintw((13,0),&format!("Max X: {}",window.getmaxyx().1));
+    window.mvprintw((25,0),&format!("baudrate: {}",baudrate()));
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );
