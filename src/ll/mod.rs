@@ -20,7 +20,7 @@ pub struct NCursesWindow {
 
     _flags: c_short,
 
-    _attrs: attr_t,
+    pub _attrs: attr_t,
     _bkgd: chtype,
 
     _notimeout: bool,

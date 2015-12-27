@@ -47,6 +47,13 @@ impl Window {
     pub fn attron<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wattr_on(self.p_window, attr.to_attr_t(), 0); }
     }
+
+    pub fn attrset<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { 
+            let mut_p_window: *mut NCursesWindow = self.p_window as *mut NCursesWindow;
+            (*mut_p_window)._attrs = attr.to_attr_t();
+        }
+    }
     
     pub fn border<T: ScalarAttribute>(&self, left_side: T, right_side: T, top_side: T, bottom_side: T, top_left: T, top_right: T, bottom_left: T, bottom_right: T) {
         unsafe { ll::wborder(self.p_window, left_side.to_attr_t(), right_side.to_attr_t(), top_side.to_attr_t(), bottom_side.to_attr_t(), top_left.to_attr_t(), top_right.to_attr_t(), bottom_left.to_attr_t(), bottom_right.to_attr_t() ); }
@@ -179,6 +186,11 @@ fn hello_world() {
     window.addchstr(string_as_chtype!("Line 22"));
     window.mv((21,0));
     window.addstr("Line 21");
+    window.mv((20,0));
+    window.attron(Attribute::Bold);
+    window.attrset(Attribute::Underline);
+    window.printw("Line 20 Underlined");
+    window.attroff(Attribute::Underline);
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );
