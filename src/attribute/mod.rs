@@ -1,15 +1,6 @@
 use super::ll::attr_t;
 use std::ops::{BitOr};
 
-/* WILL BE REMOVED
-#[macro_export]
-macro_rules! attributes {
-    ( $( $attr:expr ),+ ) => {
-        &[$( $attr ),+] as &[Attribute]
-    };
-}
-*/
-
 #[macro_export]
 macro_rules! chtype_vec {
     ( $( $x:expr ),* ) => {
@@ -50,18 +41,6 @@ impl ScalarAttribute for char {
         *self as attr_t
     }
 }
-
-/* WILL BE REMOVED
-impl<'a> ScalarAttribute for &'a[Attribute] {
-    fn to_attr_t(&self) -> attr_t {
-        let mut result: attr_t = 0;
-        for attribute in *self {
-            result = result | attribute.to_attr_t();
-        }
-        result
-    }
-}
-*/
 
 impl BitOr for Attribute {
     type Output = attr_t;
