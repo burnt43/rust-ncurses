@@ -49,9 +49,9 @@ impl Window {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
     }
     pub fn addchnstr(&self, chars: Vec<chtype>, num_chars: i32) {
-        let mut clone : Vec<chtype> = chars.clone();
-        clone.push(0);
-        unsafe { ll::waddchnstr(self.p_window, clone.as_ptr(), num_chars); }
+        let mut m_chars : Vec<chtype> = chars;
+        m_chars.push(0);
+        unsafe { ll::waddchnstr(self.p_window, m_chars.as_ptr(), num_chars); }
     }
     pub fn getnstr(&self, num_chars: i32) -> Result<String,std::str::Utf8Error> {
         let buffer: Vec<u8> = vec![1;128];
@@ -82,6 +82,11 @@ impl Window {
     }
     pub fn boxify<T: ScalarAttribute>(&self, vertical: T, horizontal: T) {
         unsafe { ll::wborder(self.p_window, vertical.to_attr_t(), vertical.to_attr_t(), horizontal.to_attr_t(), horizontal.to_attr_t(),0,0,0,0); }
+    }
+    pub fn addchstr(&self, chars: Vec<chtype>) {
+        let mut m_chars: Vec<chtype> = chars;
+        m_chars.push(0);
+        unsafe { ll::waddchnstr(self.p_window, m_chars.as_ptr(), -1); }
     }
 }
 
@@ -147,6 +152,8 @@ fn hello_world() {
     window.addchnstr(chtype_vec!['a', 'b', 'c', 'd', 'e'],4);
     window.mv( (23,0) );
     window.addchnstr(string_as_chtype!("HELLO!"),-1);
+    window.mv((22,0));
+    window.addchstr(string_as_chtype!("Line 22"));
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );
