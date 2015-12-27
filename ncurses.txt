@@ -584,8 +584,8 @@ extern NCURSES_EXPORT(int) attr_get (attr_t *, NCURSES_PAIRS_T *, void *);	/* ge
 extern NCURSES_EXPORT(int) attr_off (attr_t, void *);			/* generated */
 extern NCURSES_EXPORT(int) attr_on (attr_t, void *);			/* generated */
 extern NCURSES_EXPORT(int) attr_set (attr_t, NCURSES_PAIRS_T, void *);		/* generated */
-extern NCURSES_EXPORT(int) baudrate (void);				/* implemented */
-extern NCURSES_EXPORT(int) beep  (void);				/* implemented */
+YES, USE baudrate(); extern NCURSES_EXPORT(int) baudrate (void);				/* implemented */
+YES, USE baudrate(); extern NCURSES_EXPORT(int) beep  (void);				/* implemented */
 extern NCURSES_EXPORT(int) bkgd (chtype);				/* generated */
 extern NCURSES_EXPORT(void) bkgdset (chtype);				/* generated */
 extern NCURSES_EXPORT(int) border (chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype);	/* generated */
