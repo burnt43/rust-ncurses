@@ -56,30 +56,30 @@ pub struct NCursesWindow {
 
 #[link(name="ncurses")]
 extern {
-    pub fn initscr() -> *const NCursesWindow;
-    pub fn endwin()  -> c_int;
-    pub fn wprintw(_: *const NCursesWindow, _: *const c_char) -> c_int;
-    pub fn wgetch(_: *const NCursesWindow) -> c_int;
-    pub fn wrefresh(_: *const NCursesWindow) -> c_int;
-    pub fn mvwprintw(_: *const NCursesWindow, _: c_int, _: c_int, _: *const c_char) -> c_int;
-    pub fn keypad(_: *const NCursesWindow, _: bool) -> c_int;
-    pub fn raw() -> c_int;
-    pub fn noraw() -> c_int;
-    pub fn cbreak() -> c_int;
-    pub fn nocbreak() -> c_int;
-    pub fn echo() -> c_int;
-    pub fn noecho() -> c_int;
-    pub fn wattr_on(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
-    pub fn wattr_off(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
-    pub fn waddch(_: *const NCursesWindow, _: chtype);
-    pub fn waddnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
-    pub fn waddchnstr(_: *const NCursesWindow, _: *const chtype, _: c_int) -> c_int;
-    pub fn wgetnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
-    pub fn wmove(_: *const NCursesWindow, _: c_int, _: c_int) -> c_int;
-    pub fn wscrl(_: *const NCursesWindow, _: c_int) -> c_int;
-    pub fn scrollok(_: *const NCursesWindow, _: bool) -> c_int;
-    pub fn newwin(_: c_int, _: c_int, _: c_int, _: c_int) -> *const NCursesWindow;
-    pub fn wborder(_: *const NCursesWindow, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype) -> c_int;
     pub fn baudrate() -> c_int;
     pub fn beep() -> c_int;
+    pub fn cbreak() -> c_int;
+    pub fn echo() -> c_int;
+    pub fn endwin()  -> c_int;
+    pub fn initscr() -> *const NCursesWindow;
+    pub fn keypad(_: *const NCursesWindow, _: bool) -> c_int;
+    pub fn mvwprintw(_: *const NCursesWindow, _: c_int, _: c_int, _: *const c_char) -> c_int;
+    pub fn newwin(_: c_int, _: c_int, _: c_int, _: c_int) -> *const NCursesWindow;
+    pub fn nocbreak() -> c_int;
+    pub fn noecho() -> c_int;
+    pub fn noraw() -> c_int;
+    pub fn raw() -> c_int;
+    pub fn scrollok(_: *const NCursesWindow, _: bool) -> c_int;
+    pub fn waddch(_: *const NCursesWindow, _: chtype);
+    pub fn waddchnstr(_: *const NCursesWindow, _: *const chtype, _: c_int) -> c_int;
+    pub fn waddnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
+    pub fn wattr_off(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
+    pub fn wattr_on(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
+    pub fn wborder(_: *const NCursesWindow, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype) -> c_int;
+    pub fn wgetch(_: *const NCursesWindow) -> c_int;
+    pub fn wgetnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
+    pub fn wmove(_: *const NCursesWindow, _: c_int, _: c_int) -> c_int;
+    pub fn wprintw(_: *const NCursesWindow, _: *const c_char) -> c_int;
+    pub fn wrefresh(_: *const NCursesWindow) -> c_int;
+    pub fn wscrl(_: *const NCursesWindow, _: c_int) -> c_int;
 }
