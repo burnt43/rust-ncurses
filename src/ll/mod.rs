@@ -4,6 +4,8 @@ use super::attribute::{ScalarAttribute,Attribute};
 pub type size_t = c_short;
 pub type chtype = c_ulong;
 pub type attr_t = chtype;
+pub type pairs_t = c_short;
+pub type color_t = c_short;
 
 #[repr(C)]
 struct Ldat;
@@ -61,6 +63,7 @@ extern {
     pub fn cbreak() -> c_int;
     pub fn echo() -> c_int;
     pub fn endwin()  -> c_int;
+    pub fn init_pair(_: pairs_t, _: color_t, _: color_t) -> c_int;
     pub fn initscr() -> *const NCursesWindow;
     pub fn keypad(_: *const NCursesWindow, _: bool) -> c_int;
     pub fn mvwprintw(_: *const NCursesWindow, _: c_int, _: c_int, _: *const c_char) -> c_int;
@@ -69,6 +72,7 @@ extern {
     pub fn noecho() -> c_int;
     pub fn noraw() -> c_int;
     pub fn raw() -> c_int;
+    pub fn start_color() -> c_int;
     pub fn scrollok(_: *const NCursesWindow, _: bool) -> c_int;
     pub fn waddch(_: *const NCursesWindow, _: chtype);
     pub fn waddchnstr(_: *const NCursesWindow, _: *const chtype, _: c_int) -> c_int;

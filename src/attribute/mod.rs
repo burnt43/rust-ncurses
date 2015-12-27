@@ -1,4 +1,4 @@
-use super::ll::attr_t;
+use super::ll::{attr_t, color_t};
 use std::ops::{BitOr};
 
 #[macro_export]
@@ -16,6 +16,32 @@ macro_rules! chtype_vec {
 macro_rules! string_as_chtype {
     ( $string:expr ) => {
         $string.chars().map(|c| c.to_attr_t()).collect::<Vec<chtype>>()
+    }
+}
+
+pub enum Color {
+    Black,
+    Red,
+    Green,
+    Yellow,
+    Blue,
+    Magenta,
+    Cyan,
+    White,
+}
+
+impl Color {
+    pub fn to_color_t(&self) -> color_t {
+        match *self {
+            Color::Black => 0,
+            Color::Red => 1,
+            Color::Green => 2,
+            Color::Yellow => 3,
+            Color::Blue => 4,
+            Color::Magenta => 5,
+            Color::Cyan => 6,
+            Color::White => 7,
+        }
     }
 }
 

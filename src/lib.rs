@@ -8,7 +8,7 @@ use std::ffi::CString;
 use std::mem;
 use libc::{c_short,c_char};
 use ll::{NCursesWindow,attr_t,chtype};
-use attribute::{Attribute, ScalarAttribute};
+use attribute::{Attribute, ScalarAttribute, Color};
 
 pub struct Window {
     p_window: *const NCursesWindow,
@@ -141,6 +141,10 @@ pub fn endwin() {
     unsafe { ll::endwin(); }
 }
 
+pub fn init_pair(pair_number: i16, color_pair: (Color, Color)) {
+    unsafe { ll::init_pair(pair_number, color_pair.0.to_color_t(), color_pair.1.to_color_t()); }
+}
+
 pub fn initscr() -> Window {
     let p_p_window: *const NCursesWindow = unsafe { ll::initscr() };
     Window { p_window: p_p_window }
@@ -162,9 +166,15 @@ pub fn raw() {
     unsafe { ll::raw(); }
 }
 
+pub fn start_color() {
+    unsafe { ll::start_color(); }
+}
+
 #[test]
 fn hello_world() {
     let window: Window = initscr();
+    start_color();
+    init_pair(1,(Color::Red, Color::Black));
     window.keypad(true);
     window.scrollok(true);
     window.attron(Attribute::Bold | Attribute::Underline);
