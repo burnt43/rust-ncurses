@@ -110,45 +110,45 @@ impl Window {
 }
 
 // Global Functions
-pub fn initscr() -> Window {
-    let p_p_window: *const NCursesWindow = unsafe { ll::initscr() };
-    Window { p_window: p_p_window }
-}
-
-pub fn endwin() {
-    unsafe { ll::endwin(); }
-}
-
-pub fn raw() {
-    unsafe { ll::raw(); }
-}
-
-pub fn noraw() {
-    unsafe { ll::noraw(); }
-}
-
-pub fn cbreak() {
-    unsafe { ll::cbreak(); }
-}
-
-pub fn nocbreak() {
-    unsafe { ll::nocbreak(); }
-}
-
-pub fn echo() {
-    unsafe { ll::echo(); }
-}
-
-pub fn noecho() {
-    unsafe { ll::noecho(); }
-}
-
 pub fn baudrate() -> i32 {
     unsafe { ll::baudrate() }
 }
 
 pub fn beep() {
     unsafe { ll::beep(); }
+}
+
+pub fn cbreak() {
+    unsafe { ll::cbreak(); }
+}
+
+pub fn echo() {
+    unsafe { ll::echo(); }
+}
+
+pub fn endwin() {
+    unsafe { ll::endwin(); }
+}
+
+pub fn initscr() -> Window {
+    let p_p_window: *const NCursesWindow = unsafe { ll::initscr() };
+    Window { p_window: p_p_window }
+}
+
+pub fn nocbreak() {
+    unsafe { ll::nocbreak(); }
+}
+
+pub fn noecho() {
+    unsafe { ll::noecho(); }
+}
+
+pub fn noraw() {
+    unsafe { ll::noraw(); }
+}
+
+pub fn raw() {
+    unsafe { ll::raw(); }
 }
 
 #[test]
