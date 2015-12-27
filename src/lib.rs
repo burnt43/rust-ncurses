@@ -36,6 +36,10 @@ impl Window {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
     }
 
+    pub fn addstr(&self, string: &str) {
+        unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), -1); }
+    }
+
     pub fn attr_off<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wattr_off(self.p_window, attr.to_attr_t(), 0); }
     }
@@ -173,6 +177,8 @@ fn hello_world() {
     window.addchnstr(string_as_chtype!("HELLO!"),-1);
     window.mv((22,0));
     window.addchstr(string_as_chtype!("Line 22"));
+    window.mv((21,0));
+    window.addstr("Line 21");
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );

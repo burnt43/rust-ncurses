@@ -576,7 +576,7 @@ YES, USE window.addch(); extern NCURSES_EXPORT(int) addch (const chtype);			/* g
 YES, USE window.addchnstr(); extern NCURSES_EXPORT(int) addchnstr (const chtype *, int);		/* generated */
 YES, USE window.addchstr(); extern NCURSES_EXPORT(int) addchstr (const chtype *);			/* generated */
 YES, USE window.addnstr(); extern NCURSES_EXPORT(int) addnstr (const char *, int);			/* generated */
-extern NCURSES_EXPORT(int) addstr (const char *);			/* generated */
+YES, USE window.addstr(); extern NCURSES_EXPORT(int) addstr (const char *);			/* generated */
 extern NCURSES_EXPORT(int) attroff (NCURSES_ATTR_T);			/* generated */
 extern NCURSES_EXPORT(int) attron (NCURSES_ATTR_T);			/* generated */
 extern NCURSES_EXPORT(int) attrset (NCURSES_ATTR_T);			/* generated */
