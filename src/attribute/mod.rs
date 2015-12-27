@@ -12,6 +12,13 @@ macro_rules! chtype_vec {
     };
 }
 
+#[macro_export]
+macro_rules! string_as_chtype {
+    ( $string:expr ) => {
+        $string.chars().map(|c| c.to_attr_t()).collect::<Vec<chtype>>()
+    }
+}
+
 pub enum Attribute {
     Underline,
     Bold,

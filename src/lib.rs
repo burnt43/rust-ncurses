@@ -145,6 +145,8 @@ fn hello_world() {
     window.mvprintw((25,0),&format!("baudrate: {}",baudrate()));
     window.mv( (24,0) );
     window.addchnstr(chtype_vec!['a', 'b', 'c', 'd', 'e'],4);
+    window.mv( (23,0) );
+    window.addchnstr(string_as_chtype!("HELLO!"),-1);
     window.mv( (15,100) );
     window.addch('J');
     window.mv( (16,101) );
