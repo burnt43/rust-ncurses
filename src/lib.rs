@@ -15,44 +15,51 @@ pub struct Window {
 }
 
 impl Window {
-    // Implemented Functions
-    pub fn new( dimensions: (i32,i32), starting_point: (i32,i32) ) -> Window {
-        unsafe { 
-            Window { p_window: ll::newwin( dimensions.0, dimensions.1, starting_point.0, starting_point.1 ) } 
-        }
-    }
-    pub fn printw(&self, s: &str) {
-        unsafe { ll::wprintw( self.p_window, CString::new(s).unwrap().as_ptr() ); }
-    }
-    pub fn mvprintw(&self, pos: (i32,i32), s: &str) {
-        unsafe { ll::mvwprintw( self.p_window, pos.0, pos.1, CString::new(s).unwrap().as_ptr() ); }
-    }
-    pub fn getch(&self) -> Option<char> {
-        std::char::from_u32( unsafe { ll::wgetch(self.p_window) } as u32 )
-    }
-    pub fn refresh(&self) {
-        unsafe { ll::wrefresh(self.p_window); }
-    }
-    pub fn keypad(&self, enabled: bool) {
-        unsafe { ll::keypad(self.p_window,enabled); }
-    }
-    pub fn attr_on<T: ScalarAttribute>(&self, attr: T) {
-        unsafe { ll::wattr_on(self.p_window, attr.to_attr_t(), 0); }
-    }
-    pub fn attr_off<T: ScalarAttribute>(&self, attr: T) {
-        unsafe { ll::wattr_off(self.p_window, attr.to_attr_t(), 0); }
-    }
+
     pub fn addch<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::waddch(self.p_window, attr.to_attr_t() ); }
     }
-    pub fn addnstr(&self, string: &str, num_chars: i32) {
-        unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
-    }
+
     pub fn addchnstr(&self, chars: Vec<chtype>, num_chars: i32) {
         let mut m_chars : Vec<chtype> = chars;
         m_chars.push(0);
         unsafe { ll::waddchnstr(self.p_window, m_chars.as_ptr(), num_chars); }
     }
+
+    pub fn addchstr(&self, chars: Vec<chtype>) {
+        let mut m_chars: Vec<chtype> = chars;
+        m_chars.push(0);
+        unsafe { ll::waddchnstr(self.p_window, m_chars.as_ptr(), -1); }
+    }
+
+    pub fn addnstr(&self, string: &str, num_chars: i32) {
+        unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), num_chars); }
+    }
+
+    pub fn attr_off<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { ll::wattr_off(self.p_window, attr.to_attr_t(), 0); }
+    }
+
+    pub fn attr_on<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { ll::wattr_on(self.p_window, attr.to_attr_t(), 0); }
+    }
+    
+    pub fn border<T: ScalarAttribute>(&self, left_side: T, right_side: T, top_side: T, bottom_side: T, top_left: T, top_right: T, bottom_left: T, bottom_right: T) {
+        unsafe { ll::wborder(self.p_window, left_side.to_attr_t(), right_side.to_attr_t(), top_side.to_attr_t(), bottom_side.to_attr_t(), top_left.to_attr_t(), top_right.to_attr_t(), bottom_left.to_attr_t(), bottom_right.to_attr_t() ); }
+    }
+
+    pub fn boxify<T: ScalarAttribute>(&self, vertical: T, horizontal: T) {
+        unsafe { ll::wborder(self.p_window, vertical.to_attr_t(), vertical.to_attr_t(), horizontal.to_attr_t(), horizontal.to_attr_t(),0,0,0,0); }
+    }
+    
+    pub fn getch(&self) -> Option<char> {
+        std::char::from_u32( unsafe { ll::wgetch(self.p_window) } as u32 )
+    }
+    
+    pub fn getmaxyx(&self) -> (i16,i16) {
+        unsafe { ( (*(self.p_window))._maxy + 1, (*(self.p_window))._maxx + 1) }
+    }
+    
     pub fn getnstr(&self, num_chars: i32) -> Result<String,std::str::Utf8Error> {
         let buffer: Vec<u8> = vec![1;128];
         let p_str: *mut c_char = CString::new(buffer).unwrap().into_raw();
@@ -61,33 +68,45 @@ impl Window {
         let result: &str = try!( read_string.to_str() );
         Ok(result.to_string())
     }
-    pub fn mv(&self, pos: (i32,i32)) {
-        unsafe { ll::wmove(self.p_window,pos.0,pos.1); }
-    }
-    pub fn scrl(&self, n: i32) {
-        unsafe { ll::wscrl(self.p_window,n); }
-    }
-    pub fn scrollok(&self, ok: bool) {
-        unsafe { ll::scrollok(self.p_window, ok); }
-    }
-    pub fn border<T: ScalarAttribute>(&self, left_side: T, right_side: T, top_side: T, bottom_side: T, top_left: T, top_right: T, bottom_left: T, bottom_right: T) {
-        unsafe { ll::wborder(self.p_window, left_side.to_attr_t(), right_side.to_attr_t(), top_side.to_attr_t(), bottom_side.to_attr_t(), top_left.to_attr_t(), top_right.to_attr_t(), bottom_left.to_attr_t(), bottom_right.to_attr_t() ); }
-    }
-    // Generated
-    pub fn getmaxyx(&self) -> (i16,i16) {
-        unsafe { ( (*(self.p_window))._maxy + 1, (*(self.p_window))._maxx + 1) }
-    }
+    
     pub fn getyx(&self) -> (i16,i16) {
         unsafe { ( (*(self.p_window))._cury, (*(self.p_window))._curx ) }
     }
-    pub fn boxify<T: ScalarAttribute>(&self, vertical: T, horizontal: T) {
-        unsafe { ll::wborder(self.p_window, vertical.to_attr_t(), vertical.to_attr_t(), horizontal.to_attr_t(), horizontal.to_attr_t(),0,0,0,0); }
+    
+    pub fn keypad(&self, enabled: bool) {
+        unsafe { ll::keypad(self.p_window,enabled); }
     }
-    pub fn addchstr(&self, chars: Vec<chtype>) {
-        let mut m_chars: Vec<chtype> = chars;
-        m_chars.push(0);
-        unsafe { ll::waddchnstr(self.p_window, m_chars.as_ptr(), -1); }
+    
+    pub fn mv(&self, pos: (i32,i32)) {
+        unsafe { ll::wmove(self.p_window,pos.0,pos.1); }
     }
+    
+    pub fn mvprintw(&self, pos: (i32,i32), s: &str) {
+        unsafe { ll::mvwprintw( self.p_window, pos.0, pos.1, CString::new(s).unwrap().as_ptr() ); }
+    }
+
+    pub fn new( dimensions: (i32,i32), starting_point: (i32,i32) ) -> Window {
+        unsafe { 
+            Window { p_window: ll::newwin( dimensions.0, dimensions.1, starting_point.0, starting_point.1 ) } 
+        }
+    }
+
+    pub fn printw(&self, s: &str) {
+        unsafe { ll::wprintw( self.p_window, CString::new(s).unwrap().as_ptr() ); }
+    }
+
+    pub fn refresh(&self) {
+        unsafe { ll::wrefresh(self.p_window); }
+    }
+
+    pub fn scrl(&self, n: i32) {
+        unsafe { ll::wscrl(self.p_window,n); }
+    }
+
+    pub fn scrollok(&self, ok: bool) {
+        unsafe { ll::scrollok(self.p_window, ok); }
+    }
+
 }
 
 // Global Functions
