@@ -40,11 +40,11 @@ impl Window {
         unsafe { ll::waddnstr(self.p_window, CString::new(string).unwrap().as_ptr(), -1); }
     }
 
-    pub fn attr_off<T: ScalarAttribute>(&self, attr: T) {
+    pub fn attroff<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wattr_off(self.p_window, attr.to_attr_t(), 0); }
     }
 
-    pub fn attr_on<T: ScalarAttribute>(&self, attr: T) {
+    pub fn attron<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wattr_on(self.p_window, attr.to_attr_t(), 0); }
     }
     
@@ -160,9 +160,9 @@ fn hello_world() {
     let window: Window = initscr();
     window.keypad(true);
     window.scrollok(true);
-    window.attr_on(Attribute::Bold | Attribute::Underline);
+    window.attron(Attribute::Bold | Attribute::Underline);
     window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
-    window.attr_off(Attribute::Bold | Attribute::Underline);
+    window.attroff(Attribute::Bold | Attribute::Underline);
     window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
     window.mvprintw((3,0),"Press 'x' to exit ");
     window.addch('a' | Attribute::Bold | Attribute::Underline);
