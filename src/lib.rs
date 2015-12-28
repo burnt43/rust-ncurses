@@ -58,6 +58,10 @@ impl Window {
     pub fn bkgd<T: ScalarAttribute>(&self, attr: T) {
         unsafe { ll::wbkgd(self.p_window, attr.to_attr_t()); }
     }
+
+    pub fn bkgdset<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { ll::wbkgdset(self.p_window, attr.to_attr_t()); }
+    }
     
     pub fn border<T: ScalarAttribute>(&self, left_side: T, right_side: T, top_side: T, bottom_side: T, top_left: T, top_right: T, bottom_left: T, bottom_right: T) {
         unsafe { ll::wborder(self.p_window, left_side.to_attr_t(), right_side.to_attr_t(), top_side.to_attr_t(), bottom_side.to_attr_t(), top_left.to_attr_t(), top_right.to_attr_t(), bottom_left.to_attr_t(), bottom_right.to_attr_t() ); }
@@ -206,19 +210,28 @@ fn hello_world() {
     window.attrset(Attribute::Underline);
     window.printw("Line 20 Underlined");
     window.attroff(Attribute::Underline);
-    window.mv( (15,100) );
+    window.mv( (15,30) );
     window.addch('J');
-    window.mv( (16,101) );
+    window.mv( (16,31) );
     window.addch('A');
     window.mvprintw((14,0),"Please type a string: ");
     echo();
     window.refresh();
 
-    let other_win: Window = Window::new( (5,50), (15,75) );
+    let other_win: Window = Window::new( (5,50), (6,75) );
     other_win.bkgd(color_pair!(2));
     other_win.boxify(0,0);
-    other_win.mvprintw((1,1),"AAA");
+    other_win.mvprintw((1,1),"Window 1(bkgd)");
     other_win.refresh();
+
+    let some_win: Window = Window::new( (5,50), (11,75) );
+    some_win.bkgdset(color_pair!(2));
+    some_win.boxify(0,0);
+    some_win.mvprintw((1,1),"Window 2(bkgdset)");
+    some_win.addch(':');
+    some_win.addch(' ');
+    some_win.printw(": Hi");
+    some_win.refresh();
 
     match window.getnstr(-1) {
         Ok(s) => window.mvprintw((15,0),&s),
