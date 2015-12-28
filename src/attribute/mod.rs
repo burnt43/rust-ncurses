@@ -55,8 +55,10 @@ impl Color {
 pub enum Attribute {
     Blink,
     Bold,
+    Color,
     Dim,
     Italic,
+    Normal,
     Reverse,
     Standout,
     Underline,
@@ -69,13 +71,15 @@ pub trait ScalarAttribute {
 impl ScalarAttribute for Attribute {
     fn to_attr_t(&self) -> attr_t {
         match *self {
-            Attribute::Standout  => 65536,      // 2^16
-            Attribute::Underline => 131072,     // 2^17
-            Attribute::Reverse   => 262144,     // 2^18
-            Attribute::Blink     => 524288,     // 2^19
-            Attribute::Dim       => 1048576,    // 2^20
-            Attribute::Bold      => 2097152,    // 2^21
-            Attribute::Italic    => 2147483648, // 2^31
+            Attribute::Normal    => 0,
+            Attribute::Color     => 65280,      // 0xFF00
+            Attribute::Standout  => 65536,      // 2 << 16
+            Attribute::Underline => 131072,     // 2 << 17
+            Attribute::Reverse   => 262144,     // 2 << 18
+            Attribute::Blink     => 524288,     // 2 << 19
+            Attribute::Dim       => 1048576,    // 2 << 20
+            Attribute::Bold      => 2097152,    // 2 << 21
+            Attribute::Italic    => 2147483648, // 2 << 31
         }
     }
 }
