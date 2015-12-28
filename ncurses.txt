@@ -599,9 +599,9 @@ extern NCURSES_EXPORT(int) attr_set (attr_t, NCURSES_PAIRS_T, void *);		/* gener
 YES, USE baudrate(); extern NCURSES_EXPORT(int) baudrate (void);				/* implemented */
 YES, USE beep(); extern NCURSES_EXPORT(int) beep  (void);				/* implemented */
 YES, USE window.bkgd(); extern NCURSES_EXPORT(int) bkgd (chtype);				/* generated */
-extern NCURSES_EXPORT(void) bkgdset (chtype);				/* generated */
-extern NCURSES_EXPORT(int) border (chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype);	/* generated */
-extern NCURSES_EXPORT(int) box (WINDOW *, chtype, chtype);		/* generated */
+YES, USE window.bkgdset(); extern NCURSES_EXPORT(void) bkgdset (chtype);				/* generated */
+YES, USE window.border(); extern NCURSES_EXPORT(int) border (chtype,chtype,chtype,chtype,chtype,chtype,chtype,chtype);	/* generated */
+YES, USE window.boxify(); extern NCURSES_EXPORT(int) box (WINDOW *, chtype, chtype);		/* generated */
 extern NCURSES_EXPORT(bool) can_change_color (void);			/* implemented */
 extern NCURSES_EXPORT(int) cbreak (void);				/* implemented */
 extern NCURSES_EXPORT(int) chgat (int, attr_t, NCURSES_PAIRS_T, const void *);	/* generated */
