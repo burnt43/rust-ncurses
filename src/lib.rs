@@ -174,7 +174,8 @@ pub fn start_color() {
 fn hello_world() {
     let window: Window = initscr();
     start_color();
-    init_pair(1,(Color::Red, Color::Black));
+    init_pair(1,(Color::Cyan, Color::Black));
+    window.attron(color_pair!(1));
     window.keypad(true);
     window.scrollok(true);
     window.attron(Attribute::Bold | Attribute::Underline);

@@ -19,6 +19,13 @@ macro_rules! string_as_chtype {
     }
 }
 
+#[macro_export]
+macro_rules! color_pair {
+    ( $num:expr ) => {
+        ($num as attr_t) << 8
+    }
+}
+
 pub enum Color {
     Black,
     Red,
