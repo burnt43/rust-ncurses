@@ -40,21 +40,26 @@ pub enum Color {
 impl Color {
     pub fn to_color_t(&self) -> color_t {
         match *self {
-            Color::Black => 0,
-            Color::Red => 1,
-            Color::Green => 2,
-            Color::Yellow => 3,
-            Color::Blue => 4,
+            Color::Black   => 0,
+            Color::Red     => 1,
+            Color::Green   => 2,
+            Color::Yellow  => 3,
+            Color::Blue    => 4,
             Color::Magenta => 5,
-            Color::Cyan => 6,
-            Color::White => 7,
+            Color::Cyan    => 6,
+            Color::White   => 7,
         }
     }
 }
 
 pub enum Attribute {
-    Underline,
+    Blink,
     Bold,
+    Dim,
+    Italic,
+    Reverse,
+    Standout,
+    Underline,
 }
 
 pub trait ScalarAttribute {
@@ -64,8 +69,13 @@ pub trait ScalarAttribute {
 impl ScalarAttribute for Attribute {
     fn to_attr_t(&self) -> attr_t {
         match *self {
-            Attribute::Underline => 131072,  // 2^17
-            Attribute::Bold      => 2097152, // 2^21
+            Attribute::Standout  => 65536,      // 2^16
+            Attribute::Underline => 131072,     // 2^17
+            Attribute::Reverse   => 262144,     // 2^18
+            Attribute::Blink     => 524288,     // 2^19
+            Attribute::Dim       => 1048576,    // 2^20
+            Attribute::Bold      => 2097152,    // 2^21
+            Attribute::Italic    => 2147483648, // 2^31
         }
     }
 }

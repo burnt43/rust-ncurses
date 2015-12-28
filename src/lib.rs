@@ -178,9 +178,9 @@ fn hello_world() {
     window.attron(color_pair!(1));
     window.keypad(true);
     window.scrollok(true);
-    window.attron(Attribute::Bold | Attribute::Underline);
+    window.attron(Attribute::Dim);
     window.printw("THIS SHOULD BE BOLD AND UNDERLINED");
-    window.attroff(Attribute::Bold | Attribute::Underline);
+    window.attroff(Attribute::Dim);
     window.mvprintw((1,0),"THIS SHOULD NOT BE BOLD OR UNDERLINED");
     window.mvprintw((3,0),"Press 'x' to exit ");
     window.addch('a' | Attribute::Bold | Attribute::Underline);
