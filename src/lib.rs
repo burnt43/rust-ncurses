@@ -54,6 +54,10 @@ impl Window {
             (*mut_p_window)._attrs = attr.to_attr_t();
         }
     }
+
+    pub fn bkgd<T: ScalarAttribute>(&self, attr: T) {
+        unsafe { ll::wbkgd(self.p_window, attr.to_attr_t()); }
+    }
     
     pub fn border<T: ScalarAttribute>(&self, left_side: T, right_side: T, top_side: T, bottom_side: T, top_left: T, top_right: T, bottom_left: T, bottom_right: T) {
         unsafe { ll::wborder(self.p_window, left_side.to_attr_t(), right_side.to_attr_t(), top_side.to_attr_t(), bottom_side.to_attr_t(), top_left.to_attr_t(), top_right.to_attr_t(), bottom_left.to_attr_t(), bottom_right.to_attr_t() ); }
@@ -175,6 +179,7 @@ fn hello_world() {
     let window: Window = initscr();
     start_color();
     init_pair(1,(Color::Green, Color::Black));
+    init_pair(2,(Color::Blue, Color::White));
     window.keypad(true);
     window.scrollok(true);
     window.attron(Attribute::Bold | Attribute::Underline | color_pair!(1));
@@ -210,6 +215,7 @@ fn hello_world() {
     window.refresh();
 
     let other_win: Window = Window::new( (5,50), (15,75) );
+    other_win.bkgd(color_pair!(2));
     other_win.boxify(0,0);
     other_win.mvprintw((1,1),"AAA");
     other_win.refresh();

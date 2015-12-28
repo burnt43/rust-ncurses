@@ -79,6 +79,7 @@ extern {
     pub fn waddnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
     pub fn wattr_off(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
     pub fn wattr_on(_: *const NCursesWindow, _: attr_t, _: c_ulong) -> c_int;
+    pub fn wbkgd(_: *const NCursesWindow, _: chtype) -> c_int;
     pub fn wborder(_: *const NCursesWindow, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype, _: chtype) -> c_int;
     pub fn wgetch(_: *const NCursesWindow) -> c_int;
     pub fn wgetnstr(_: *const NCursesWindow, _: *const c_char, _: c_int) -> c_int;
